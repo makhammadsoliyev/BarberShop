@@ -1,4 +1,5 @@
-﻿using BarberShop.Models.Appointments;
+﻿using BarberShop.Configurations;
+using BarberShop.Models.Appointments;
 using BarberShop.Models.Barbershops;
 using BarberShop.Models.Users;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ public class BarbershopDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = $"Host={};Port=port_number;Database=database_name;User Id=username;Password=password;";
-        optionsBuilder.UseNpgsql();
+        var connectionString = $"Host={Constants.HOST};Port={Constants.PORT};Database={Constants.DATABASE};User Id={Constants.USER};Password={Constants.PASSWORD};";
+        optionsBuilder.UseNpgsql(connectionString);
     }
 }
