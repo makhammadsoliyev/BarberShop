@@ -10,5 +10,5 @@ public interface IBarbershopService
     Task<bool> DeleteAsync(long id);
     Task<Barbershop> GetByIdAsync(long id);
     Task<IEnumerable<Barbershop>> GetAllAsync();
-    Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
+    Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(long id);
 }
