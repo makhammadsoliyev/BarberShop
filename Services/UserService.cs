@@ -18,60 +18,69 @@ public class UserService : IUserService
         this.users = dbContext.Users;        
     }
 
-    public async Task<bool> DeleteAsync(long id)
-    {
-
-        var exisUser = await users.FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new Exception($"This user is not found with ID = {id}");
-
-        users.Remove(exisUser);
-        dbContext.SaveChanges();
-        return true;
-    }
-
-    public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(long id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<User>> GetAllAsync()
-    {
-        return users;
-    }
-
-    public async Task<User> GetByIdAsync(long id)
-    {
-        var exisUser = await users.FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new Exception($"This user is not found with ID = {id}");
-
-        return exisUser;
-    }
-
-    public Task<User> LogInAsync(string phoneNumber, string password)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<User> RegisterAsync(User user)
     {
         user.CreatedAt = DateTime.UtcNow;
-        dbContext.Users.Add(user);
+        var createUser = await dbContext.Users.AddAsync(user);
         dbContext.SaveChanges();
-        return user;
+        return createUser.Entity;
     }
 
     public async Task<User> UpdateAsync(long id, User user)
     {
-        var exisUser = await users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted)
+        var existUser = await users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted)
             ?? throw new Exception($"This user is not found with ID = {id}");
 
-        exisUser.FirstName = user.FirstName;
-        exisUser.LastName = user.LastName;
-        exisUser.PhoneNumber = user.PhoneNumber;
-        exisUser.Password = user.Password;
-        exisUser.UpdatedAt =DateTime.UtcNow;
+        existUser.FirstName = user.FirstName;
+        existUser.LastName = user.LastName;
+        existUser.PhoneNumber = user.PhoneNumber;
+        existUser.Password = user.Password;
+        existUser.UpdatedAt = DateTime.UtcNow;
 
         dbContext.SaveChanges();
-        return exisUser;
+        return existUser;
     }
+
+    public async Task<bool> DeleteAsync(long id)
+    {
+        var existUser = await users.FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new Exception($"This user is not found with ID = {id}");
+
+        users.Remove(existUser);
+        dbContext.SaveChanges();
+        return true;
+    }
+
+    public async Task<User> GetByIdAsync(long id)
+    {
+        var existUser = await users.FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new Exception($"This user is not found with ID = {id}");
+
+        return existUser;
+    }
+
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await users.ToListAsync();
+    }
+
+    public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(long id)
+    {
+        var existUser = await users.FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new Exception($"This user is not found with ID = {id}");
+
+        var result = existUser.Appointments?.ToList();
+        return result ?? new List<Appointment>();
+    }
+
+
+
+    public async Task<User> LogInAsync(string phoneNumber, string password)
+    {
+        var existUser = await users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber && x.Password == password)
+             ?? throw new Exception($"This user is not found");
+
+        return existUser;
+    }
+
 }
