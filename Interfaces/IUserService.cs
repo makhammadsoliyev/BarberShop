@@ -22,5 +22,5 @@ public interface IUserService
 
     Task<User> UpdateAsync(long id, User user);
 
-    Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
+    Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(long id);
 }
