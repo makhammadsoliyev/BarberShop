@@ -3,7 +3,6 @@ using BarberShop.Interfaces;
 using BarberShop.Models.Appointments;
 using BarberShop.Models.Users;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 
 namespace BarberShop.Services;
 
