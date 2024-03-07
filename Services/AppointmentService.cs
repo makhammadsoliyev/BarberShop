@@ -7,17 +7,23 @@ namespace BarberShop.Services;
 
 public class AppointmentService : IAppointmentService
 {
+    private readonly IUserService userService;
     private readonly BarbershopDbContext dbContext;
     private readonly DbSet<Appointment> appointments;
+    private readonly IBarbershopService barbershopService;
 
-    public AppointmentService(BarbershopDbContext dbContext)
+    public AppointmentService(BarbershopDbContext dbContext, IUserService userService, IBarbershopService barbershopService)
     {
         this.dbContext = dbContext;
+        this.userService = userService;
         this.appointments = dbContext.Appointments;
+        this.barbershopService = barbershopService;
     }
 
     public async Task<Appointment> BookAsync(Appointment appointment)
     {
+        await userService.GetByIdAsync(appointment.UserId);
+        await barbershopService.GetByIdAsync(appointment.BarberShopId);
         var entityAppointment = await appointments.AddAsync(appointment);
 
         await dbContext.SaveChangesAsync();
@@ -31,6 +37,8 @@ public class AppointmentService : IAppointmentService
             ?? throw new Exception();
 
         appointments.Remove(appointment);
+
+        await dbContext.SaveChangesAsync();
 
         return true;
     }
