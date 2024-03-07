@@ -3,7 +3,6 @@ using BarberShop.Interfaces;
 using BarberShop.Models.Appointments;
 using BarberShop.Models.Users;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 
 namespace BarberShop.Services;
 
@@ -15,7 +14,7 @@ public class UserService : IUserService
     public UserService(BarbershopDbContext dbContext)
     {
         this.dbContext = dbContext;
-        this.users = dbContext.Users;        
+        this.users = dbContext.Users;
     }
 
     public async Task<User> RegisterAsync(User user)
@@ -28,7 +27,7 @@ public class UserService : IUserService
 
     public async Task<User> UpdateAsync(long id, User user)
     {
-        var existUser = await users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted)
+        var existUser = await users.FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new Exception($"This user is not found with ID = {id}");
 
         existUser.FirstName = user.FirstName;

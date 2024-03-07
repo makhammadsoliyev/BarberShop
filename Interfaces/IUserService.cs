@@ -1,16 +1,11 @@
 ﻿using BarberShop.Models.Appointments;
 using BarberShop.Models.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BarberShop.Interfaces;
 
 public interface IUserService
 {
-    Task<User> RegisterAsync (User user);
+    Task<User> RegisterAsync(User user);
 
     Task<User> LogInAsync(string phoneNumber, string password);
 
