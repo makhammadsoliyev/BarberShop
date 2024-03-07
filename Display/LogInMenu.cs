@@ -126,7 +126,7 @@ public class LogInMenu
             var date = AnsiConsole.Ask<DateOnly>("[cyan1]Date: [/]");
             var timeOptions = Enumerable.Range(8, 14).Select(t => $"{t}:00");
             var time = TimeOnly.Parse(new SelectionMenu().ShowSelectionMenu("Time", timeOptions.ToArray()));
-            var barbershopId = Convert.ToInt64(selection.Split("")[0]);
+            var barbershopId = Convert.ToInt64(selection.Split()[0]);
             var appointment = new Appointment()
             {
                 Time = time,
@@ -182,7 +182,7 @@ public class LogInMenu
             while (circle)
             {
                 AnsiConsole.Clear();
-                var options = new string[] { "Barbershop", "GetAllUsers", "ShowProfile", "[red]Back[/]" };
+                var options = new string[] { "Barbershop", "GetAllUsers", "[red]Back[/]" };
                 var selection = selectionDisplay.ShowSelectionMenu("Choose one of options", options);
 
                 switch (selection)
@@ -243,6 +243,7 @@ public class LogInMenu
             catch (Exception ex)
             {
                 AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+                Thread.Sleep(1500);
             }
         }
     }
