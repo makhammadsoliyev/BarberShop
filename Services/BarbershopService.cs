@@ -25,7 +25,7 @@ public class BarbershopService : IBarbershopService
 
     public async Task<bool> DeleteAsync(long id)
     {
-        var existBarberShop = await barbershops.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted)
+        var existBarberShop = await barbershops.FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new Exception($"This barbershop is not found with ID = {id}");
 
         barbershops.Remove(existBarberShop);
@@ -35,7 +35,7 @@ public class BarbershopService : IBarbershopService
 
     public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(long id)
     {
-        var existBarbershop = await barbershops.FirstOrDefaultAsync(b => b.Id == id && !b.IsDeleted)
+        var existBarbershop = await barbershops.FirstOrDefaultAsync(b => b.Id == id)
             ?? throw new Exception($"This barbershop is not found with ID = {id}");
 
         var result = existBarbershop.Appointments?.ToList();
@@ -49,7 +49,7 @@ public class BarbershopService : IBarbershopService
 
     public async Task<Barbershop> GetByIdAsync(long id)
     {
-        var existBarberShop = await barbershops.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted)
+        var existBarberShop = await barbershops.FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new Exception($"This barbershop is not found with ID = {id}");
 
         return existBarberShop;
@@ -57,7 +57,7 @@ public class BarbershopService : IBarbershopService
 
     public async Task<Barbershop> UpdateAsync(long id, Barbershop barbershop)
     {
-        var existBarberShop = await barbershops.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted)
+        var existBarberShop = await barbershops.FirstOrDefaultAsync(x => x.Id == id)
            ?? throw new Exception($"This barbershop is not found with ID = {id}");
 
         existBarberShop.Longitude = barbershop.Longitude;
